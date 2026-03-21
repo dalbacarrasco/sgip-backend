@@ -1,3 +1,4 @@
+using Domain.Common;
 namespace Domain.Loans.ValueObjects;
 
 public sealed class InterestRate : ValueObject

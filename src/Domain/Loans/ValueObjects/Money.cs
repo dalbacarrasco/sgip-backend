@@ -1,9 +1,10 @@
+using Domain.Common;
 namespace Domain.Loans.ValueObjects;
 
 public sealed class Money : ValueObject
 {
     public decimal Amount { get; }
-    public string Currency { get; }
+    public  string Currency { get; }
 
     private Money() { }
 
