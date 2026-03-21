@@ -1,0 +1,16 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+
+## Configuración sensible
+appsettings.Development.json
+appsettings.*.json
+!appsettings.json
+
+## VS Code
+.vscode/
+
+## Logs
+*.log
