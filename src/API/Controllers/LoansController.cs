@@ -2,6 +2,7 @@ using Application.Loans.Commands.ApplyLoan;
 using Application.Loans.Commands.ApproveLoan;
 using Application.Loans.Commands.SimulateLoan;
 using Application.Loans.Queries.GetLoan;
+using Application.Loans.Queries.GetPaymentSchedule;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,6 +45,13 @@ namespace API.Controllers
         {
             var approved = await _mediator.Send(new ApproveLoanCommand(id));
             return Ok(new { approved });
+        }
+
+        [HttpGet("{id:guid}/payment-schedule")]
+        public async Task<IActionResult> GetPaymentSchedule(Guid id)
+        {
+            var result = await _mediator.Send(new GetPaymentScheduleQuery(id));
+            return Ok(result);
         }
     }
 }
