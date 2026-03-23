@@ -1,3 +1,4 @@
+using Domain.Common;
 using Domain.Loans.Entities;
 using Domain.Transactions.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,8 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Aplica todas las configuraciones de la carpeta Configurations
+            modelBuilder.Ignore<DomainEvent>();
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             base.OnModelCreating(modelBuilder);
         }
