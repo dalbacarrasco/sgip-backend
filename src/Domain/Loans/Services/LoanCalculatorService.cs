@@ -43,7 +43,7 @@ namespace Domain.Loans.Services
             var fixedInstallment = principal * tem / (1 - (decimal)Math.Pow((double)(1 + tem), -n));
 
             var remainingBalance = principal;
-            var previousDate = DateTime.UtcNow;
+            var previousDate = loan.DisbursementDate ?? firstPaymentDate.AddMonths(-1);
 
             for (int i = 1; i <= n; i++)
             {
@@ -52,8 +52,8 @@ namespace Domain.Loans.Services
                 var actualDays = (adjustedDate - previousDate).Days;
 
                 var periodRate = (decimal)(Math.Pow((double)(1 + tea), actualDays / 365.0) - 1);
-                var interestAmount = remainingBalance * periodRate;
-                var principalAmount = fixedInstallment - interestAmount;
+                var interestAmount = Math.Max(remainingBalance * periodRate, 0);
+                var principalAmount = Math.Max(fixedInstallment - interestAmount, 0);
 
                 if (i == n)
                 {
@@ -61,7 +61,7 @@ namespace Domain.Loans.Services
                     fixedInstallment = principalAmount + interestAmount;
                 }
 
-                remainingBalance -= principalAmount;
+                remainingBalance = Math.Max(remainingBalance - principalAmount, 0);
 
                 schedule.Add(PaymentScheduleItem.Create(
                     loan.Id,
@@ -137,15 +137,15 @@ namespace Domain.Loans.Services
         }
 
         public decimal CalculateCreditScore(
-            decimal onTimePaymentRate, 
-            decimal debtToIncomeRatio, 
-            int clientAgeInMonths)     
+            decimal onTimePaymentRate,
+            decimal debtToIncomeRatio,
+            int clientAgeInMonths)
         {
-            var historyScore = onTimePaymentRate * 40;                        
-            var debtScore = (1 - debtToIncomeRatio) * 35;                      
-            var seniorityScore = Math.Min(clientAgeInMonths / 24m, 1) * 25;    
+            var historyScore = onTimePaymentRate * 40;
+            var debtScore = (1 - debtToIncomeRatio) * 35;
+            var seniorityScore = Math.Min(clientAgeInMonths / 24m, 1) * 25;
 
-            return historyScore + debtScore + seniorityScore; 
+            return historyScore + debtScore + seniorityScore;
         }
 
         public bool IsLoanApproved(decimal creditScore) => creditScore >= 60;
