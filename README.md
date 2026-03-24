@@ -161,3 +161,12 @@ dotnet test src/Tests/Tests.csproj
 ## 6. Evidencias
 ![API Swagger](images/documentacion_api_1.png)
 ![](images/documentacion_api_2.png)
+
+## 7. Documentación
+### Diagrama de arquitectura
+
+![Diagrama de arquitectura](images/c4_nivel2.png)
+
+### Diagrama de flujo
+
+![Diagrama de flujo](images/flujo-sgip.png)
